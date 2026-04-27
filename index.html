@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="CLAMP: Contrastive Learning for 3D Multi-View Action-Conditioned Robotic Manipulation Pretraining">
+  <meta name="keywords" content="CLAMP, Pretraining, RoboticManipulation, MultiView, 3D">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLAMP: Contrastive Learning for 3D Multi-View Action-Conditioned Robotic Manipulation Pretraining</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <!-- <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">CLAMP: Contrastive Learning for 3D Multi-View Action-Conditioned
+              Robotic Manipulation Pretraining</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://arthurliu.com/">I-Chun Arthur Liu</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                <a href="https://ieor.columbia.edu/content/krzysztof-choromanski">Krzysztof
+                  Choromanski</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://shhuang.github.io/">Sandy Huang</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://storage.googleapis.com/www.connorschenck.com/index.html">Connor
+                  Schenck</a><sup>1</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Google DeepMind</span>
+              <span class="author-block"><sup>2</sup>University of Southern California</span>
+            </div>
+            <!-- <span class="author-block"><sup></sup>RSS 2026</span> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <!-- <span class="link-block">
+                  <a href="https://arxiv.org/pdf" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span> -->
+                <!-- <span class="link-block">
+                  <a href="https://arxiv.org/abs/" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="./static/images/hero_figure_v2.png" class="interpolation-image" alt="Hero Figure" />
+        <h2 class="subtitle has-text-centered">
+          <span class="dnerf">CLAMP</span> is a 3D pre-training framework for robotic manipulation.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video poster autoplay muted loop playsinline height="100%">
+              <source src=".\static\videos\hero_teaser\open_drawers_s1.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="item">
+            <video poster autoplay muted loop playsinline height="100%">
+              <source src=".\static\videos\hero_teaser\mug_on_plate_s1.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="item">
+            <video poster autoplay muted loop playsinline height="100%">
+              <source src=".\static\videos\hero_teaser\plate_on_rack_s1.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="item">
+            <video poster autoplay muted loop playsinline height="100%">
+              <source src=".\static\videos\hero_teaser\close_drawers_s1.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="item">
+            <video poster autoplay muted loop playsinline height="100%">
+              <source src=".\static\videos\hero_teaser\recycle_cans_s1.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <div class="item" style="
+              box-sizing: border-box;
+              padding: 5px;                 /* moved spacing INSIDE */
+              margin: 0;                    /* remove outer spacing */
+              overflow: hidden;
+              border: 0px solid #bbb;
+              border-radius: 10px;
+              font-size: 0;
+              width: 100%;
+            ">
+            <div style="
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                overflow: hidden;
+                border-radius: 8px;         /* border-radius - padding */
+              ">
+              <video autoplay muted loop playsinline style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                ">
+                <source src="./static/videos/hero_teaser/can_opener_s1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item" style="
+              box-sizing: border-box;
+              padding: 5px;                 /* moved spacing INSIDE */
+              margin: 0;                    /* remove outer spacing */
+              overflow: hidden;
+              border: 0px solid #bbb;
+              border-radius: 10px;
+              font-size: 0;
+              width: 100%;
+            ">
+            <div style="
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                overflow: hidden;
+                border-radius: 8px;         /* border-radius - padding */
+              ">
+              <video autoplay muted loop playsinline style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                ">
+                <source src="./static/videos/hero_teaser/pen_in_container_s1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+
+          <div class="item" style="
+              box-sizing: border-box;
+              padding: 5px;                 /* moved spacing INSIDE */
+              margin: 0;                    /* remove outer spacing */
+              overflow: hidden;
+              border: 0px solid #bbb;
+              border-radius: 10px;
+              font-size: 0;
+              width: 100%;
+            ">
+            <div style="
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                overflow: hidden;
+                border-radius: 8px;         /* border-radius - padding */
+              ">
+              <video autoplay muted loop playsinline style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                ">
+                <source src="./static/videos/hero_teaser/plate_on_rack_sim_s1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+
+          <div class="item" style="
+              box-sizing: border-box;
+              padding: 5px;                 /* moved spacing INSIDE */
+              margin: 0;                    /* remove outer spacing */
+              overflow: hidden;
+              border: 0px solid #bbb;
+              border-radius: 10px;
+              font-size: 0;
+              width: 100%;
+            ">
+            <div style="
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                overflow: hidden;
+                border-radius: 8px;         /* border-radius - padding */
+              ">
+              <video autoplay muted loop playsinline style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                ">
+                <source src="./static/videos/hero_teaser/screwdriver_s1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item" style="
+              box-sizing: border-box;
+              padding: 5px;                 /* moved spacing INSIDE */
+              margin: 0;                    /* remove outer spacing */
+              overflow: hidden;
+              border: 0px solid #bbb;
+              border-radius: 10px;
+              font-size: 0;
+              width: 100%;
+            ">
+            <div style="
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                overflow: hidden;
+                border-radius: 8px;         /* border-radius - padding */
+              ">
+              <video autoplay muted loop playsinline style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                ">
+                <source src="./static/videos/hero_teaser/open_drawer_sim_s1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item" style="
+              box-sizing: border-box;
+              padding: 5px;                 /* moved spacing INSIDE */
+              margin: 0;                    /* remove outer spacing */
+              overflow: hidden;
+              border: 0px solid #bbb;
+              border-radius: 10px;
+              font-size: 0;
+              width: 100%;
+            ">
+            <div style="
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                overflow: hidden;
+                border-radius: 8px;         /* border-radius - padding */
+              ">
+              <video autoplay muted loop playsinline style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  display: block;
+                ">
+                <source src="./static/videos/hero_teaser/mug_on_plate_sim_s1.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Leveraging pre-trained 2D image representations in behavior cloning policies has achieved
+              great success and has become a standard approach for robotic manipulation. However, such
+              representations fail to capture the 3D spatial information about objects and scenes that is essential for
+              precise manipulation. In this work, we introduce <b>C</b>ontrastive <b>L</b>earning for 3D Multi-View
+              <b>A</b>ction-Conditioned Robotic <b>M</b>anipulation <b>P</b>retraining (<b>CLAMP</b>), a novel 3D
+              pre-training framework
+              that utilizes point clouds and robot actions through contrastive learning. From the merged point cloud, we
+              re-render multi-view four-channel image observations with depth and 3D coordinates, including dynamic
+              wrist views, to provide clearer views of the scene, which is effective for high-precision manipulation
+              tasks. The pre-trained encoders learn to associate the 3D geometric and positional information of objects
+              with robot action patterns in a self-supervised manner, using large-scale simulated robot trajectories.
+              While pre-training the encoders, we also pre-train a Diffusion Policy to initialize the policy weights for
+              fine-tuning, which is essential for improving fine-tuning sample efficiency and performance. After
+              pre-training, we fine-tune the policy on a limited amount of task demonstrations using the learned image
+              and action representations. We demonstrate that this pre-training and fine-tuning design substantially
+              improves learning efficiency and policy performance on unseen tasks. Furthermore, we show that
+              <b>CLAMP</b> outperforms state-of-the-art baselines across six simulated tasks and five real-world tasks.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Method Overview -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Method Overview</h2>
+          <img src="./static/images/figure_method.png" class="interpolation-image"
+            alt="Interpolate start reference image." />
+          <div class="content has-text-justified">
+            <p>
+              <b>(i):</b> <b>CLAMP</b> consists of three encoders: image, action and text. The image encoder is a
+              Vision Transformer (ViT) that takes five multi-view observations (overhead, front-left,
+              back-right, wrist-left, and wrist-right) as input. These views are rendered from a merged point
+              cloud and include depth and 3D coordinates. The action encoder is a Transformer encoder that takes a
+              history of previous action chunks \( (a_{t−1}, \dots , a_{t−H}) \) as input. The text input
+              includes a general task description, each object's name and normalized position in the global coordinate
+              frame, and an integer indicating task progress, and is processed by a CLIP text encoder. The
+              intuition is to learn image and action representations that capture correlations between action patterns
+              and robot states as observed in images, grounded by text that describes the spatial and temporal
+              information about the objects and task. We also pre-train a Diffusion Policy in parallel.
+            </p>
+            <p>
+              <b>(ii):</b> The Diffusion Policy is first initialized with the pre-trained weights from stage (i) and
+              use the frozen <b>CLAMP</b> encoders to extract image and action embeddings. These embeddings are fed into
+              a Transformer encoder together with RGB feature maps from ResNet-50 backbones and proprioceptive features
+              from the robot to predict noise of shape 50×14 for the next 50 actions \( (\epsilon_{t+1} , \dots ,
+              \epsilon_{t+50} ) \).
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Method Overview -->
+
+      <!-- Image Representation -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3" style="text-align:start;">Image Representation</h2>
+          <img src="./static/images/input_image_v2.png" class="interpolation-image" alt="Input image for CLAMP."
+            style="border-radius: 40px;" />
+          <div class="content has-text-justified">
+            <p>
+              We re-render multi-view four-channel observations from the merged point cloud that include depth and 3D
+              coordinates, using both fixed viewpoints and dynamic wrist views, which provide clearer observations for
+              high-precision manipulation tasks. Each virtual view has dimensions \( 224 \times 224 \times 4 \), and we
+              tile the views horizontally to form a \( 224 \times 1120 \times 4 \) input (example shown above).
+            </p>
+          </div>
+
+          <img src="./static/images/string.png" class="interpolation-image" alt="STRING relative positional encoding."
+            style="border-radius: 40px;" />
+          <div class="content has-text-justified">
+            <p>
+              We apply <a href="https://sites.google.com/view/string-robotics">STRING</a> relative positional encoding
+              to the image encoder, enabling tokens from different views
+              that correspond to nearby regions in 3D space to be correlated (see the image above for an illustration).
+              Specifically, tokens from different 2D views are concatenated, but also equipped with STRING positional
+              encoding mechanism. Consequently, the attention score between two highlighted tokens from two different
+              views will be modulated by a function that depends only on the vector \( \mathbf{r}_{i,j} \in
+              \mathbb{R}^{3} \) between the centers of mass of two sub-point clouds (highlighted in red and blue
+              correspondingly) of the visible sets of points related to those tokens.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Image Representation -->
+
+      <!-- Quantitative Results -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3" style="text-align:start;">Quantitative Results</h2>
+          <img src="./static/images/quantitative_results.png" class="interpolation-image" alt="Quantitative results." />
+          <div class="content has-text-justified">
+            <p>
+              Evaluation curves comparing our method (<span style="color: green;">green</span>) to baselines across
+              three seeds in simulation.
+              All methods are trained on 4500 demonstrations for 1M environment steps and evaluated for 50
+              trials per checkpoint every 40K steps. <b><a href="https://aloha-unleashed.github.io/">ALOHA Unleashed</a>
+                with CLAMP</b> (<span style="color: green;">green</span>) shows strong performance at very
+              early training stages, indicating
+              significant gains in sample efficiency and overall performance due to pre-training.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Quantitative Results -->
+
+      <!-- Successful Rollouts -->
+      <div class="columns is-centered  has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3" style="text-align:start;">Successful Rollouts of CLAMP</h2>
+          <div class="content has-text-justified">
+            <p>
+              All rollout videos are shown in <b>real time</b> (1x speed).
+            </p>
+          </div>
+
+          <div class="columns is-centered mt-4">
+            <div class="column">
+              <div id="baseline-container">
+                <p style="text-align:left;"><strong>Close Drawers</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/close_drawers_s1.png">
+                      <source src="./static/videos/successful_rollouts/close_drawers_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/close_drawers_s2.png">
+                      <source src="./static/videos/successful_rollouts/close_drawers_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+                <p style="text-align:left;"><strong>Open Drawers</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/open_drawers_s1.png">
+                      <source src="./static/videos/successful_rollouts/open_drawers_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/open_drawers_s2.png">
+                      <source src="./static/videos/successful_rollouts/open_drawers_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+                <p style="text-align:left;"><strong>Mug on Plate (Real)</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/mug_on_plate_real_s1.png">
+                      <source src="./static/videos/successful_rollouts/mug_on_plate_real_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/mug_on_plate_real_s2.png">
+                      <source src="./static/videos/successful_rollouts/mug_on_plate_real_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+                <p style="text-align:left;"><strong>Plate on Rack (Real)</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/plate_on_rack_real_s1.png">
+                      <source src="./static/videos/successful_rollouts/plate_on_rack_real_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/plate_on_rack_real_s2.png">
+                      <source src="./static/videos/successful_rollouts/plate_on_rack_real_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+
+                <p style="text-align:left;"><strong>Recycle Cans</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/recycle_cans_s1.png">
+                      <source src="./static/videos/successful_rollouts/recycle_cans_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/recycle_cans_s2.png">
+                      <source src="./static/videos/successful_rollouts/recycle_cans_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+
+                <p style="text-align:left;"><strong>Drawer Open</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/drawer_open_s1.png">
+                      <source src="./static/videos/successful_rollouts/drawer_open_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/drawer_open_s2.png">
+                      <source src="./static/videos/successful_rollouts/drawer_open_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+
+                <p style="text-align:left;"><strong>Mug on Plate (Sim)</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/mug_on_plate_sim_s1.png">
+                      <source src="./static/videos/successful_rollouts/mug_on_plate_sim_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/mug_on_plate_sim_s2.png">
+                      <source src="./static/videos/successful_rollouts/mug_on_plate_sim_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+
+                <p style="text-align:left;"><strong>Pen in Container</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/pen_in_container_s1.png">
+                      <source src="./static/videos/successful_rollouts/pen_in_container_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/pen_in_container_s2.png">
+                      <source src="./static/videos/successful_rollouts/pen_in_container_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+
+                <p style="text-align:left;"><strong>Can Opener in Caddy</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/can_opener_s1.png">
+                      <source src="./static/videos/successful_rollouts/can_opener_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/can_opener_s2.png">
+                      <source src="./static/videos/successful_rollouts/can_opener_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+
+                <p style="text-align:left;"><strong>Screwdriver in Caddy</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/screwdriver_s1.png">
+                      <source src="./static/videos/successful_rollouts/screwdriver_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/screwdriver_s2.png">
+                      <source src="./static/videos/successful_rollouts/screwdriver_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+                <p style="text-align:left;"><strong>Plate on Rack (Sim)</strong></p>
+                <div class="columns">
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/plate_on_rack_sim_s1.png">
+                      <source src="./static/videos/successful_rollouts/plate_on_rack_sim_s1.mp4" type="video/mp4">
+                    </video>
+                  </div>
+
+                  <div class="column is-6">
+                    <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                      poster="./static/videos/successful_rollouts/plate_on_rack_sim_s2.png">
+                      <source src="./static/videos/successful_rollouts/plate_on_rack_sim_s2.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Successful Rollouts -->
+
+
+      <!-- Failures -->
+      <div class="columns is-centered  has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3" style="text-align:start;">Failures</h2>
+          <div class="content has-text-justified">
+            <p>
+              Failure cases of <b>CLAMP</b> across different tasks.
+            </p>
+          </div>
+
+          <div class="box mt-0 mb-0">
+            <div class="columns is-centered">
+              <div class="column is-narrow">
+                <div class="field">
+                  <label class="label">Choose a task to view failure cases of <span class="dnerf">CLAMP</span>:</label>
+                  <div class="control">
+                    <div class="select">
+                      <select id="failure-selector">
+                        <option value="close_drawers_failures">Close Drawers</option>
+                        <option value="open_drawers_failures">Open Drawers</option>
+                        <option value="mug_on_plate_real_failures">Mug on Plate (Real)</option>
+                        <option value="plate_on_rack_real_failures">Plate on Rack (Real)</option>
+                        <option value="recycle_cans_failures">Recycle Cans</option>
+                        <option value="drawer_open_failures">Drawer Open</option>
+                        <option value="mug_on_plate_sim_failures">Mug on Plate (Sim)</option>
+                        <option value="pen_in_container_failures">Pen in Container</option>
+                        <option value="can_opener_failures">Can Opener in Caddy</option>
+                        <option value="screwdriver_failures">Screwdriver in Caddy</option>
+                        <option value="plate_on_rack_sim_failures">Plate on Rack (Sim)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="columns is-centered mt-4">
+              <div class="column">
+                <div id="baseline-container" class="has-text-centered">
+                  <!-- Close Drawers -->
+                  <div id="close_drawers_failures" class="failure-class">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/close_drawers_f1.png">
+                          <source src="./static/videos/failures/close_drawers_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/close_drawers_f2.png">
+                          <source src="./static/videos/failures/close_drawers_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- Open Drawers -->
+                  <div id="open_drawers_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/open_drawers_f1.png">
+                          <source src="./static/videos/failures/open_drawers_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/open_drawers_f2.png">
+                          <source src="./static/videos/failures/open_drawers_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- Mug on Plate -->
+                  <div id="mug_on_plate_real_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/mug_on_plate_real_f1.png">
+                          <source src="./static/videos/failures/mug_on_plate_real_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/mug_on_plate_real_f2.png">
+                          <source src="./static/videos/failures/mug_on_plate_real_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Plate on Rack -->
+                  <div id="plate_on_rack_real_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/plate_on_rack_real_f1.png">
+                          <source src="./static/videos/failures/plate_on_rack_real_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/plate_on_rack_real_f2.png">
+                          <source src="./static/videos/failures/plate_on_rack_real_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Recycle Cans -->
+                  <div id="recycle_cans_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/recycle_cans_f1.png">
+                          <source src="./static/videos/failures/recycle_cans_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 90%; height: 85%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/recycle_cans_f2.png">
+                          <source src="./static/videos/failures/recycle_cans_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Drawer Open -->
+                  <div id="drawer_open_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/drawer_open_f1.png">
+                          <source src="./static/videos/failures/drawer_open_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Mug on Plate -->
+                  <div id="mug_on_plate_sim_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/mug_on_plate_sim_f1.png">
+                          <source src="./static/videos/failures/mug_on_plate_sim_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/mug_on_plate_sim_f2.png">
+                          <source src="./static/videos/failures/mug_on_plate_sim_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- Pen in Container -->
+                  <div id="pen_in_container_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/pen_in_container_f1.png">
+                          <source src="./static/videos/failures/pen_in_container_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/pen_in_container_f2.png">
+                          <source src="./static/videos/failures/pen_in_container_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Can Opener in Caddy -->
+                  <div id="can_opener_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/can_opener_f1.png">
+                          <source src="./static/videos/failures/can_opener_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/can_opener_f2.png">
+                          <source src="./static/videos/failures/can_opener_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Screwdriver in Caddy -->
+                  <div id="screwdriver_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/screwdriver_f1.png">
+                          <source src="./static/videos/failures/screwdriver_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Plate on Rack -->
+                  <div id="plate_on_rack_sim_failures" class="failure-class" style="display: none;">
+                    <div class="columns">
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/plate_on_rack_sim_f1.png">
+                          <source src="./static/videos/failures/plate_on_rack_sim_f1.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                      <div class="column is-6">
+                        <video controls muted style="width: 100%; height: 100%; min-height: 218px;" preload="none"
+                          poster="./static/videos/failures/plate_on_rack_sim_f2.png">
+                          <source src="./static/videos/failures/plate_on_rack_sim_f2.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Failures -->
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p> Website template modified from <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a>.</p>
+            This website is licensed under a <a rel="license"
+              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
