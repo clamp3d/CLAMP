@@ -337,20 +337,6 @@ body {
   margin: 0 auto;
 }
 
-.failure-videos video {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  display: block;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.failure-videos video:focus,
-.failure-videos video:hover {
-  outline: none;
-}
 
 @media (max-width: 640px) {
   .failure-videos {
@@ -439,10 +425,19 @@ body {
   gap: 1rem;
 }
 
-.rollout-videos video {
+.rollout-videos .video-wrapper,
+.failure-videos .video-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.rollout-videos video,
+.failure-videos video {
   width: 100%;
   height: auto;
-  border-radius: 10px;
   display: block;
   background: transparent;
   border: none;
@@ -450,8 +445,49 @@ body {
 }
 
 .rollout-videos video:focus,
-.rollout-videos video:hover {
+.rollout-videos video:hover,
+.failure-videos video:focus,
+.failure-videos video:hover {
   outline: none;
+}
+
+.video-toggle {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.6rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(15, 23, 42, 0.55);
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.85;
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.video-wrapper:hover .video-toggle,
+.video-toggle:hover,
+.video-toggle:focus {
+  opacity: 1;
+  background: rgba(15, 23, 42, 0.85);
+}
+
+.video-toggle:hover {
+  transform: scale(1.05);
+}
+
+.video-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
 @media (max-width: 640px) {

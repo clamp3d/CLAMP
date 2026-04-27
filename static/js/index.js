@@ -140,14 +140,77 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  const PLAY_SVG = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
+  const PAUSE_SVG = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
   const clickableVideos = document.querySelectorAll('.rollout-videos video, .failure-videos video');
   clickableVideos.forEach(function(video) {
-    video.addEventListener('click', function() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'video-wrapper';
+    video.parentNode.insertBefore(wrapper, video);
+    wrapper.appendChild(video);
+
+    const btn = document.createElement('button');
+    btn.className = 'video-toggle';
+    btn.type = 'button';
+    btn.innerHTML = PAUSE_SVG;
+    btn.setAttribute('aria-label', 'Pause video');
+    wrapper.appendChild(btn);
+
+    function syncIcon() {
+      if (video.paused) {
+        btn.innerHTML = PLAY_SVG;
+        btn.setAttribute('aria-label', 'Play video');
+      } else {
+        btn.innerHTML = PAUSE_SVG;
+        btn.setAttribute('aria-label', 'Pause video');
+      }
+    }
+
+    function toggle() {
       if (video.paused) {
         video.play();
       } else {
         video.pause();
       }
+    }
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggle();
     });
+    video.addEventListener('click', toggle);
+    video.addEventListener('play', syncIcon);
+    video.addEventListener('pause', syncIcon);
+    syncIcon();
   });
+
+  const lazyVideos = document.querySelectorAll('video[data-lazy-autoplay]');
+  if ('IntersectionObserver' in window && lazyVideos.length) {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          if (video.preload !== 'auto') video.preload = 'auto';
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(function() { /* autoplay blocked — ignore */ });
+          }
+        } else {
+          video.pause();
+        }
+      });
+    }, { rootMargin: '200px 0px', threshold: 0.1 });
+
+    lazyVideos.forEach(function(video) {
+      observer.observe(video);
+    });
+  } else {
+    lazyVideos.forEach(function(video) {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(function() {});
+      }
+    });
+  }
 });
