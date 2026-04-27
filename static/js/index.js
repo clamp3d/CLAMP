@@ -132,9 +132,22 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.failure-class').forEach(function(el) {
         el.style.display = 'none';
       });
-      
+
       const selectedId = this.value;
       document.getElementById(selectedId).style.display = 'block';
     });
   }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const clickableVideos = document.querySelectorAll('.rollout-videos video, .failure-videos video');
+  clickableVideos.forEach(function(video) {
+    video.addEventListener('click', function() {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  });
 });

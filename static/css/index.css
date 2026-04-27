@@ -172,8 +172,294 @@ body {
   .mobile-message {
     display: block;
   }
-  
+
   .desktop-content {
     display: none;
+  }
+}
+
+/* Modernized section design — shared across sections */
+.section-heading {
+  font-family: 'Google Sans', sans-serif;
+  text-align: start;
+  margin-bottom: 0.5rem !important;
+  position: relative;
+  display: inline-block;
+  letter-spacing: -0.01em;
+}
+
+.section-heading.is-centered {
+  display: block;
+  text-align: center;
+}
+
+.section-intro {
+  color: #475569;
+  margin-bottom: 1.5rem;
+}
+
+/* Modernized figures (images inside body sections) */
+.feature-figure {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  display: block;
+  margin: 0.5rem 0 1rem;
+}
+
+/* Modernized carousel items */
+.results-carousel .item {
+  margin: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 14px;
+  padding: 0;
+  font-size: 0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 6px 18px rgba(15, 23, 42, 0.06);
+  background: #ffffff;
+}
+
+/* Abstract panel */
+.abstract-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 18px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+/* Failures — modernized selector + card layout */
+.failures-panel {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.failure-selector-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-bottom: 1.4rem;
+}
+
+.failure-selector-label {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.failure-selector-control {
+  position: relative;
+  display: inline-flex;
+}
+
+.failure-selector-control select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 999px;
+  padding: 0.55rem 2.4rem 0.55rem 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.failure-selector-control select:hover {
+  background: #ffffff;
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+.failure-selector-control select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background: #ffffff;
+}
+
+.failure-selector-control::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #475569;
+  border-bottom: 2px solid #475569;
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
+.failure-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.failure-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.failure-card-header .rollout-task-name {
+  color: #0f172a;
+}
+
+.rollout-badge.failure {
+  background: rgba(244, 63, 94, 0.1);
+  color: #e11d48;
+}
+
+.failure-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.failure-videos.single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 50%;
+  margin: 0 auto;
+}
+
+.failure-videos video {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.failure-videos video:focus,
+.failure-videos video:hover {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .failure-videos {
+    grid-template-columns: 1fr;
+  }
+
+  .failure-videos.single {
+    max-width: 100%;
+  }
+}
+
+.rollouts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.rollout-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.1rem 1.4rem 1.3rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 6px 16px rgba(15, 23, 42, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.rollout-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 32px rgba(15, 23, 42, 0.09);
+}
+
+.rollout-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.rollout-task-name {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.rollout-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.rollout-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.rollout-badge.real {
+  background: rgba(22, 163, 74, 0.1);
+  color: #16a34a;
+}
+
+.rollout-badge.sim {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.rollout-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.rollout-videos video {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.rollout-videos video:focus,
+.rollout-videos video:hover {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .rollout-videos {
+    grid-template-columns: 1fr;
+  }
+
+  .rollout-card-header {
+    flex-wrap: wrap;
   }
 }
