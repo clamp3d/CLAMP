@@ -176,6 +176,81 @@ body {
   .desktop-content {
     display: none;
   }
+
+  .publication-title.title.is-1 {
+    font-size: 1.6rem !important;
+    line-height: 1.25;
+  }
+
+  .publication-authors.is-size-5,
+  .is-size-5 {
+    font-size: 0.95rem !important;
+  }
+
+  .title.is-3,
+  .section-heading {
+    font-size: 1.4rem !important;
+  }
+
+  .subtitle {
+    font-size: 1rem !important;
+  }
+
+  .content,
+  .content p,
+  .section-intro,
+  .abstract-panel p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .abstract-panel {
+    padding: 1.1rem 1.15rem;
+  }
+
+  .rollout-task-name {
+    font-size: 1rem;
+  }
+
+  .rollout-badge {
+    font-size: 0.62rem;
+    padding: 0.22rem 0.55rem;
+  }
+
+  .failure-selector-label,
+  .failure-selector-control select {
+    font-size: 0.85rem;
+  }
+
+  .failures-panel {
+    padding: 1rem;
+  }
+
+  .rollout-card {
+    padding: 0.85rem 1rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .publication-title.title.is-1 {
+    font-size: 1.35rem !important;
+  }
+
+  .title.is-3,
+  .section-heading {
+    font-size: 1.2rem !important;
+  }
+
+  .content,
+  .content p,
+  .section-intro,
+  .abstract-panel p {
+    font-size: 0.88rem;
+  }
+
+  .rollout-task-name {
+    font-size: 0.95rem;
+  }
 }
 
 /* Modernized section design — shared across sections */
